@@ -1,0 +1,13 @@
+{
+    "sources": [
+        {
+            "type": "minecraft:single",
+            "resource": "wanderersbackpack:item/empty_backpack_slot"
+        },
+        {
+            "type": "directory",
+            "source": "backpack",
+            "prefix": "backpack/"
+        }
+    ]
+}

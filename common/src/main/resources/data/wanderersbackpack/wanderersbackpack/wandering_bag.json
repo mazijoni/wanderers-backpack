@@ -1,0 +1,11 @@
+{
+    "unlock_challenge": {
+        "formatter": "wanderersbackpack:incomplete_complete",
+        "challenge": {
+            "type": "wanderersbackpack:merchant_trade",
+            "merchant": {
+                "type": "minecraft:wandering_trader"
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": [
+        "minecraft:jungle"
+    ],
+    "features": [
+        "wanderersbackpack:fallen_jungle"
+    ],
+    "step": "vegetal_decoration"
+}

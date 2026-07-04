@@ -1,0 +1,18 @@
+{
+    "item.backpack.place": {
+        "subtitle": "subtitle.wanderersbackpack.backpack.place",
+        "sounds": [
+            {
+                "name": "wanderersbackpack:item/backpack/place"
+            }
+        ]
+    },
+    "augment.wanderersbackpack.lootbound.take_item": {
+        "subtitle": "subtitle.wanderersbackpack.augment.lootbound.take_item",
+        "sounds": [
+            {
+                "name": "wanderersbackpack:augment/lootbound/take_item"
+            }
+        ]
+    }
+}

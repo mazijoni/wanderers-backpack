@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+    "pattern": [
+        " S ",
+        "SCS",
+        " S "
+    ],
+    "key": {
+        "S": {
+            "item": "minecraft:string"
+        },
+        "C": {
+            "item": "minecraft:anvil"
+        }
+    },
+    "result": {
+        "id": "wanderersbackpack:giant_augment",
+        "count": 1
+    }
+}

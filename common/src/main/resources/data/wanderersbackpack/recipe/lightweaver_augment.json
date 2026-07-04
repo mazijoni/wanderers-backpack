@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+    "pattern": [
+        " S ",
+        "SCS",
+        " S "
+    ],
+    "key": {
+        "S": {
+            "item": "minecraft:string"
+        },
+        "C": {
+            "item": "minecraft:glowstone_dust"
+        }
+    },
+    "result": {
+        "id": "wanderersbackpack:lightweaver_augment",
+        "count": 1
+    }
+}

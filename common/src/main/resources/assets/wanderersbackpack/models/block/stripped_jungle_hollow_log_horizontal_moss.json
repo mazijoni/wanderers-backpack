@@ -1,0 +1,9 @@
+{
+  "parent": "wanderersbackpack:block/hollow_log_horizontal_layer",
+  "textures": {
+    "end": "minecraft:block/stripped_jungle_log_top",
+    "inside": "minecraft:block/stripped_jungle_log",
+    "overlay": "wanderersbackpack:block/hollow_log_moss_overlay",
+    "side": "minecraft:block/stripped_jungle_log"
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "variants": {
+        "axis=x,layer=none": { "model": "wanderersbackpack:block/stripped_mangrove_hollow_log_horizontal", "x": 90, "y": 90 },
+        "axis=x,layer=moss": { "model": "wanderersbackpack:block/stripped_mangrove_hollow_log_horizontal_moss", "x": 90, "y": 90 },
+        "axis=x,layer=snow": { "model": "wanderersbackpack:block/stripped_mangrove_hollow_log_horizontal_snow", "x": 90, "y": 90 },
+        "axis=y,layer=none": { "model": "wanderersbackpack:block/stripped_mangrove_hollow_log" },
+        "axis=y,layer=moss": { "model": "wanderersbackpack:block/stripped_mangrove_hollow_log" },
+        "axis=y,layer=snow": { "model": "wanderersbackpack:block/stripped_mangrove_hollow_log" },
+        "axis=z,layer=none": { "model": "wanderersbackpack:block/stripped_mangrove_hollow_log_horizontal", "x": 90 },
+        "axis=z,layer=moss": { "model": "wanderersbackpack:block/stripped_mangrove_hollow_log_horizontal_moss", "x": 90 },
+        "axis=z,layer=snow": { "model": "wanderersbackpack:block/stripped_mangrove_hollow_log_horizontal_snow", "x": 90 }
+    }
+}

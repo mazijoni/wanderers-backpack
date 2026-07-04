@@ -1,0 +1,11 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": [
+        "minecraft:forest",
+        "minecraft:birch_forest"
+    ],
+    "features": [
+        "wanderersbackpack:mushroom_shelf"
+    ],
+    "step": "vegetal_decoration"
+}

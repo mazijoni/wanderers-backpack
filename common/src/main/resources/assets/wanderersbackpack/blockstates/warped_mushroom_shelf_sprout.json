@@ -1,0 +1,28 @@
+{
+    "variants": {
+        "facing=south,age=0": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout" },
+        "facing=south,age=1": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout" },
+        "facing=south,age=2": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout" },
+        "facing=south,age=3": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout" },
+        "facing=south,age=4": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout" },
+        "facing=south,age=5": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout" },
+        "facing=west,age=0": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 90 },
+        "facing=west,age=1": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 90 },
+        "facing=west,age=2": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 90 },
+        "facing=west,age=3": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 90 },
+        "facing=west,age=4": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 90 },
+        "facing=west,age=5": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 90 },
+        "facing=north,age=0": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 180 },
+        "facing=north,age=1": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 180 },
+        "facing=north,age=2": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 180 },
+        "facing=north,age=3": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 180 },
+        "facing=north,age=4": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 180 },
+        "facing=north,age=5": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 180 },
+        "facing=east,age=0": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 270 },
+        "facing=east,age=1": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 270 },
+        "facing=east,age=2": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 270 },
+        "facing=east,age=3": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 270 },
+        "facing=east,age=4": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 270 },
+        "facing=east,age=5": { "model": "wanderersbackpack:block/warped_mushroom_shelf_sprout", "y": 270 }
+    }
+}

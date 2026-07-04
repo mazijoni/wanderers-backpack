@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "decorations",
+    "pattern": [
+        "HHH",
+        "S S"
+    ],
+    "key": {
+        "H": {
+            "item": "minecraft:birch_slab"
+        },
+        "S": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "id": "wanderersbackpack:birch_backpack_shelf",
+        "count": 4
+    }
+}

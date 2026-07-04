@@ -1,0 +1,17 @@
+plugins {
+    id 'fabric-loom' version '1.7-SNAPSHOT' apply false
+    id 'net.neoforged.moddev' version '2.0.73' apply false
+}
+
+// This project lives on a Google-Drive-synced path, which corrupts NeoForge's decompile step.
+// Keep every module's build output on local disk instead.
+layout.buildDirectory.set(new File("${System.getenv('LOCALAPPDATA')}/travelpack-build", "build-root"))
+
+// MrCrayfish's Framework/Catalogue artifacts are normally resolved from a GitHub Packages maven
+// that requires authentication we don't have. We build Framework locally instead and publish it
+// to mavenLocal(), so every subproject needs to check there too.
+allprojects {
+    repositories {
+        mavenLocal()
+    }
+}

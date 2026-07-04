@@ -1,0 +1,82 @@
+import net.neoforged.gradle.common.tasks.PotentiallySignJar
+
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.gradle.userdev' version '7.0.167'
+}
+
+// Keep this module's build output off the Google-Drive-synced path (see root build.gradle).
+layout.buildDirectory.set(new File("${System.getenv('LOCALAPPDATA')}/travelpack-build", "build-neoforge"))
+
+def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+if (at.exists()) {
+    minecraft.accessTransformers.file at
+}
+
+runs {
+    configureEach {
+        modSource project.sourceSets.main
+    }
+    client {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+    }
+    server {
+        systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        programArgument '--nogui'
+    }
+    data {
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    repositories {
+        maven {
+            url "https://cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
+        maven {
+            url "https://maven.theillusivec4.top"
+            content {
+                includeGroup "top.theillusivec4.curios"
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neoforge_version}"
+    implementation "com.mrcrayfish:framework-neoforge:${minecraft_version}-${framework_version}"
+    // Curios is optional at runtime (see NeoForgeBackpackHelper/CuriosBackpackSupport) - compileOnly
+    // so it's not force-bundled/required, but its API is still available to compile against.
+    compileOnly "top.theillusivec4.curios:curios-neoforge:9.5.1+1.21.1"
+    // Catalogue's artifacts are also behind GitHub Packages auth we don't have, and it's just an
+    // optional "mod config button" convenience (not a required mod dependency) - dropped for now.
+    // runtimeOnly "com.mrcrayfish:catalogue-neoforge:${minecraft_version}-${catalogue_version}"
+
+    // JEI
+    compileOnly "mezz.jei:jei-${jei_minecraft_version}-common-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${jei_minecraft_version}-neoforge:${jei_version}"
+
+    // Integrations
+    //runtimeOnly "curse.maven:gravestone-mod-238551:5794085"
+    compileOnly "curse.maven:youre-in-grave-danger-544912:6684166"
+    compileOnly "curse.maven:cloth-config-348521:5729127"
+}
+
+tasks.register('signJar', PotentiallySignJar) {
+    dependsOn jar
+    onlyIf {
+        hasProperty('keyStore') || System.getenv("KEYSTORE")
+    }
+    keyStore = findProperty('keyStore') ?: System.getenv("KEYSTORE")
+    alias = findProperty('keyStoreAlias') ?: System.getenv("KEYSTORE_ALIAS")
+    storePass = findProperty('keyStorePass') ?: System.getenv("KEYSTORE_PASS")
+    input = jar.archiveFile
+}
+
+jar.finalizedBy 'signJar'

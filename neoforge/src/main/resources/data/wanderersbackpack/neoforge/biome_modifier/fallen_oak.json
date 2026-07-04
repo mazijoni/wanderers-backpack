@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": [
+        "minecraft:forest"
+    ],
+    "features": [
+        "wanderersbackpack:fallen_oak"
+    ],
+    "step": "vegetal_decoration"
+}

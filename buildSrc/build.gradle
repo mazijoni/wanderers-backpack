@@ -1,0 +1,6 @@
+plugins {
+    id 'groovy-gradle-plugin'
+}
+
+// Keep this module's build output off the Google-Drive-synced path (see root build.gradle).
+layout.buildDirectory.set(new File("${System.getenv('LOCALAPPDATA')}/travelpack-build", "build-buildSrc"))

@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+    "pattern": [
+        " S ",
+        "SCS",
+        " S "
+    ],
+    "key": {
+        "S": {
+            "item": "minecraft:string"
+        },
+        "C": {
+            "item": "minecraft:magma_cream"
+        }
+    },
+    "result": {
+        "id": "wanderersbackpack:imbued_hide_augment",
+        "count": 1
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "type": "wanderersbackpack:fallen_tree",
+    "config": {
+        "state_provider": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+                "Name": "wanderersbackpack:warped_hollow_stem",
+                "Properties": {
+                    "axis": "y",
+                    "layer": "none",
+                    "waterlogged": "false"
+                }
+            }
+        },
+        "top_block_provider": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+                { "data": { "Name": "minecraft:air" }, "weight": 5 },
+                { "data": { "Name": "minecraft:moss_carpet" }, "weight": 5 }
+            ]
+        },
+        "side_block_provider": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+            { "data": { "Name": "minecraft:air" }, "weight": 5 },
+            { "data": { "Name": "minecraft:vine" }, "weight": 3 },
+            { "data": { "Name": "wanderersbackpack:warped_mushroom_shelf_sprout" }, "weight": 2 }
+            ]
+        },
+        "guaranteed_side_provider": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+                "Name": "wanderersbackpack:warped_mushroom_shelf_sprout"
+            }
+        },
+        "guaranteed_side_count": 2
+    }
+}

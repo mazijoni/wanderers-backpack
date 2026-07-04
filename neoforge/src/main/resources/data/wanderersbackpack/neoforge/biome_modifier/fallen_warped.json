@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": [
+        "minecraft:warped_forest"
+    ],
+    "features": [
+        "wanderersbackpack:fallen_warped"
+    ],
+    "step": "vegetal_decoration"
+}

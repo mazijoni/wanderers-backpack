@@ -1,0 +1,82 @@
+{
+    "shelf_offset": [0, 0, 0],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [75, -45, 0],
+            "translation": [0.75, 6.75, 3.25]
+        },
+        "firstperson_righthand": {
+            "rotation": [0, -45, 0],
+            "translation": [-0.5, 4.5, 0.5],
+            "scale": [0.5, 0.5, 0.5]
+        },
+        "ground": {
+            "translation": [0, 4.75, -2.5]
+        },
+        "gui": {
+            "rotation": [30, 35, 0],
+            "translation": [-2.75, 4.75, 0],
+            "scale": [1.1, 1.1, 1.1]
+        },
+        "head": {
+            "rotation": [0, -180, 0],
+            "translation": [0, 14.5, 2.5]
+        },
+        "fixed": {
+            "rotation": [0, -180, 0],
+            "translation": [0, 3.5, 1]
+        },
+        "on_shelf": {
+            "translation": [0, 1.25, -4]
+        }
+    },
+    "renderer": {
+        "type": "wanderersbackpack:advanced",
+        "functions": [
+            {
+                "type": "wanderersbackpack:draw_model",
+                "model": "wanderersbackpack:wanderersbackpack/cogwheel"
+            },
+            {
+                "type": "wanderersbackpack:push_matrix",
+                "functions": [
+                    {
+                        "type": "wanderersbackpack:translate_matrix",
+                        "y": -0.21875
+                    },
+                    {
+                        "type": "wanderersbackpack:rotate_matrix",
+                        "z": {
+                            "type": "wanderersbackpack:and",
+                            "first": {
+                                "type": "wanderersbackpack:tick_count"
+                            },
+                            "second": 4,
+                            "op": "multiply"
+                        }
+                    },
+                    {
+                        "type": "wanderersbackpack:rotate_matrix",
+                        "z": {
+                            "type": "wanderersbackpack:and",
+                            "first": {
+                                "type": "wanderersbackpack:entity_data",
+                                "property": "walk_position"
+                            },
+                            "second": 16,
+                            "op": "multiply"
+                        }
+                    },
+                    {
+                        "type": "wanderersbackpack:translate_matrix",
+                        "y": 0.21875
+                    },
+                    {
+                        "type": "wanderersbackpack:draw_model",
+                        "model": "wanderersbackpack:wanderersbackpack/cogwheel_wheel"
+                    }
+                ]
+            }
+        ]
+    }
+}

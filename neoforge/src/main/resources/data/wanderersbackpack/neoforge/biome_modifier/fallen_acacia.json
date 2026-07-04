@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": [
+        "minecraft:savanna"
+    ],
+    "features": [
+        "wanderersbackpack:fallen_acacia"
+    ],
+    "step": "vegetal_decoration"
+}

@@ -1,0 +1,40 @@
+package com.mrcrayfish.backpacked.common;
+
+import com.mrcrayfish.backpacked.client.SpriteProvider;
+import com.mrcrayfish.backpacked.util.Utils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceLocation;
+
+public enum UnlockableSlotMode implements SpriteProvider
+{
+    ENABLED(Utils.rl("backpack/lock_enabled"), ChatFormatting.GREEN, "wanderersbackpack.unlockable_slot_mode.enabled"),
+    PURCHASABLE(Utils.rl("backpack/lock_purchasable"), ChatFormatting.GOLD, "wanderersbackpack.unlockable_slot_mode.purchasable"),
+    DISABLED(Utils.rl("backpack/lock_disabled"), ChatFormatting.RED, "wanderersbackpack.unlockable_slot_mode.disabled");
+
+    private final ResourceLocation texture;
+    private final ChatFormatting format;
+    private final String key;
+
+    UnlockableSlotMode(ResourceLocation texture, ChatFormatting format, String key)
+    {
+        this.texture = texture;
+        this.format = format;
+        this.key = key;
+    }
+
+    @Override
+    public ResourceLocation getSprite(boolean active, boolean hovered)
+    {
+        return this.texture;
+    }
+
+    public ChatFormatting getFormat()
+    {
+        return this.format;
+    }
+
+    public String getKey()
+    {
+        return this.key;
+    }
+}

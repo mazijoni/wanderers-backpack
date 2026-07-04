@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "decorations",
+    "pattern": [
+        "HHH",
+        "S S"
+    ],
+    "key": {
+        "H": {
+            "item": "minecraft:jungle_slab"
+        },
+        "S": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "id": "wanderersbackpack:jungle_backpack_shelf",
+        "count": 4
+    }
+}

@@ -1,0 +1,93 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"2": "fluid_texture",
+		"particle": "backpack_diamond_texture"
+	},
+	"elements": [
+		{
+			"name": "fluid",
+			"from": [11.5, 0.5, 6.5],
+			"to": [15.5, 1.5, 10.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [11.5, 0.5, 6.5]},
+			"faces": {
+				"north": {"uv": [8, 9, 12, 10], "texture": "#2"},
+				"east": {"uv": [0, 9, 4, 10], "texture": "#2"},
+				"south": {"uv": [12, 9, 16, 10], "texture": "#2"},
+				"west": {"uv": [4, 9, 8, 10], "texture": "#2"},
+				"up": {"uv": [4, 14, 0, 10], "texture": "#2"},
+				"down": {"uv": [8, 10, 4, 14], "texture": "#2"}
+			}
+		},
+		{
+			"name": "fluid",
+			"from": [12, 1, 7],
+			"to": [15, 8, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12, 1, 7]},
+			"faces": {
+				"north": {"uv": [8, 0, 12, 9], "texture": "#2"},
+				"east": {"uv": [0, 0, 4, 9], "texture": "#2"},
+				"south": {"uv": [12, 0, 16, 9], "texture": "#2"},
+				"west": {"uv": [4, 0, 8, 9], "texture": "#2"},
+				"up": {"uv": [13, 16, 10, 13], "texture": "#2"},
+				"down": {"uv": [16, 13, 13, 16], "texture": "#2"}
+			}
+		},
+		{
+			"name": "fluid",
+			"from": [11.5, 7.5, 6.5],
+			"to": [15.5, 8.5, 10.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [11.5, 7.5, 6.5]},
+			"faces": {
+				"north": {"uv": [8, 9, 12, 10], "texture": "#2"},
+				"east": {"uv": [0, 9, 4, 10], "texture": "#2"},
+				"south": {"uv": [12, 9, 16, 10], "texture": "#2"},
+				"west": {"uv": [4, 9, 8, 10], "texture": "#2"},
+				"up": {"uv": [4, 14, 0, 10], "texture": "#2"},
+				"down": {"uv": [8, 10, 4, 14], "texture": "#2"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [71, -180, 0],
+			"translation": [0, -2, -1.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [71, -180, 0],
+			"translation": [0, -2, -1.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, -26, 0],
+			"translation": [0, 5.25, 0]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -26, 0],
+			"translation": [0, 5.25, 0]
+		},
+		"ground": {
+			"translation": [0, 5.75, 0]
+		},
+		"gui": {
+			"rotation": [24, 34, 0],
+			"translation": [0, 3.25, 0]
+		},
+		"head": {
+			"translation": [0, 3.25, 8.25]
+		},
+		"fixed": {
+			"rotation": [0, -180, 0],
+			"translation": [0, 3.75, 0]
+		}
+	},
+	"groups": [
+		{
+			"name": "fluid",
+			"origin": [17.5, 0.5, 6.5],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1, 2]
+		}
+	]
+}

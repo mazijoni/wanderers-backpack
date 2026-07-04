@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": [
+        "minecraft:birch_forest"
+    ],
+    "features": [
+        "wanderersbackpack:fallen_birch"
+    ],
+    "step": "vegetal_decoration"
+}

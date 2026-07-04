@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+    "pattern": [
+        "GGG",
+        "GBG",
+        "GGG"
+    ],
+    "key": {
+        "G": {
+            "item": "minecraft:glass"
+        },
+        "B": {
+            "item": "minecraft:bucket"
+        }
+    },
+    "result": {
+        "id": "wanderersbackpack:fluid_tank_augment",
+        "count": 1
+    }
+}

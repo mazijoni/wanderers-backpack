@@ -1,0 +1,11 @@
+{
+    "unlock_challenge": {
+        "formatter": "wanderersbackpack:incomplete_complete",
+        "challenge": {
+            "type": "wanderersbackpack:breed_animal",
+            "animal": {
+                "type": "minecraft:turtle"
+            }
+        }
+    }
+}

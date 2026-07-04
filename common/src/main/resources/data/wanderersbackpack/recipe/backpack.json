@@ -1,0 +1,27 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+    "pattern": [
+        "SLS",
+        "ICI",
+        "LLL"
+    ],
+    "key": {
+        "S": {
+            "item": "minecraft:string"
+        },
+        "L": {
+            "tag": "wanderersbackpack:backpack_material"
+        },
+        "I": {
+            "item": "minecraft:iron_ingot"
+        },
+        "C": {
+            "item": "minecraft:chest"
+        }
+    },
+    "result": {
+        "id": "wanderersbackpack:backpack",
+        "count": 1
+    }
+}

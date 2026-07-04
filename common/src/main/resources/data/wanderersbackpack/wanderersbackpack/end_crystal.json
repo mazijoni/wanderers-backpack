@@ -1,0 +1,12 @@
+{
+    "unlock_challenge": {
+        "formatter": "wanderersbackpack:incomplete_complete",
+        "challenge": {
+            "type": "wanderersbackpack:kill_mob",
+            "mob": {
+                "type": "minecraft:ender_dragon"
+            },
+            "count": 1
+        }
+    }
+}

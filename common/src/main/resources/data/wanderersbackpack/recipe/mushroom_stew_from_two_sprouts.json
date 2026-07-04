@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "group": "mushroom_stew",
+    "ingredients": [
+        {
+            "item": "wanderersbackpack:mushroom_shelf_sprout"
+        },
+        {
+            "item": "wanderersbackpack:mushroom_shelf_sprout"
+        },
+        {
+            "item": "minecraft:bowl"
+        }
+    ],
+    "result": {
+        "count": 1,
+        "id": "minecraft:mushroom_stew"
+    }
+}

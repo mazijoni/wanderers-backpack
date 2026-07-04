@@ -1,0 +1,11 @@
+{
+    "replace": false,
+    "values": [
+        "minecraft:leather",
+        "minecraft:rabbit_hide",
+        {
+            "id": "alexsmobs:kangaroo_hide",
+            "required": false
+        }
+    ]
+}

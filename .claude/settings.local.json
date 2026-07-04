@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"g:/My Drive/Code/mods/TravelPack/gradlew.bat\" --stop)",
+      "Bash(rm -rf ~/.gradle/caches/ng_execute)",
+      "Bash(rm -rf \"g:/My Drive/Code/mods/TravelPack/build/neoForm\")"
+    ]
+  }
+}

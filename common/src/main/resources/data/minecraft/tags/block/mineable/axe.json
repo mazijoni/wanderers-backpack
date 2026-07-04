@@ -1,0 +1,15 @@
+{
+    "replace": false,
+    "values": [
+        "wanderersbackpack:oak_backpack_shelf",
+        "wanderersbackpack:spruce_backpack_shelf",
+        "wanderersbackpack:birch_backpack_shelf",
+        "wanderersbackpack:jungle_backpack_shelf",
+        "wanderersbackpack:dark_oak_backpack_shelf",
+        "wanderersbackpack:acacia_backpack_shelf",
+        "wanderersbackpack:crimson_backpack_shelf",
+        "wanderersbackpack:warped_backpack_shelf",
+        "wanderersbackpack:cherry_backpack_shelf",
+        "wanderersbackpack:mangrove_backpack_shelf"
+    ]
+}

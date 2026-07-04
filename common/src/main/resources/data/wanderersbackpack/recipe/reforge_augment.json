@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+    "pattern": [
+        " S ",
+        "SCS",
+        " S "
+    ],
+    "key": {
+        "S": {
+            "item": "minecraft:string"
+        },
+        "C": {
+            "item": "minecraft:experience_bottle"
+        }
+    },
+    "result": {
+        "id": "wanderersbackpack:reforge_augment",
+        "count": 1
+    }
+}

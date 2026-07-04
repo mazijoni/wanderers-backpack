@@ -1,0 +1,10 @@
+{
+    "replace": false,
+    "values": [
+        "wanderersbackpack:backpack",
+        "wanderersbackpack:copper_backpack",
+        "wanderersbackpack:gold_backpack",
+        "wanderersbackpack:diamond_backpack",
+        "wanderersbackpack:netherite_backpack"
+    ]
+}

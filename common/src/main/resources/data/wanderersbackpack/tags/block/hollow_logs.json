@@ -1,0 +1,25 @@
+{
+    "replace": false,
+    "values": [
+        "wanderersbackpack:oak_hollow_log",
+        "wanderersbackpack:stripped_oak_hollow_log",
+        "wanderersbackpack:spruce_hollow_log",
+        "wanderersbackpack:stripped_spruce_hollow_log",
+        "wanderersbackpack:birch_hollow_log",
+        "wanderersbackpack:stripped_birch_hollow_log",
+        "wanderersbackpack:jungle_hollow_log",
+        "wanderersbackpack:stripped_jungle_hollow_log",
+        "wanderersbackpack:dark_oak_hollow_log",
+        "wanderersbackpack:stripped_dark_oak_hollow_log",
+        "wanderersbackpack:acacia_hollow_log",
+        "wanderersbackpack:stripped_acacia_hollow_log",
+        "wanderersbackpack:cherry_hollow_log",
+        "wanderersbackpack:stripped_cherry_hollow_log",
+        "wanderersbackpack:crimson_hollow_stem",
+        "wanderersbackpack:stripped_crimson_hollow_stem",
+        "wanderersbackpack:warped_hollow_stem",
+        "wanderersbackpack:stripped_warped_hollow_stem",
+        "wanderersbackpack:mangrove_hollow_log",
+        "wanderersbackpack:stripped_mangrove_hollow_log"
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        {
+            "item": "wanderersbackpack:mushroom_backpack_shelf"
+        }
+    ],
+    "result": {
+        "id": "wanderersbackpack:mushroom_shelf_sprout",
+        "count": 2
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+    "pattern": [
+        "WWH"
+    ],
+    "key": {
+        "H": {
+            "item": "minecraft:hay_block"
+        },
+        "W": {
+            "item": "minecraft:wheat"
+        }
+    },
+    "result": {
+        "id": "wanderersbackpack:hay_bed",
+        "count": 1
+    }
+}

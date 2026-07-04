@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "wanderersbackpack:block/mushroom_backpack_shelf" },
+        "facing=east": { "model": "wanderersbackpack:block/mushroom_backpack_shelf", "y": 90 },
+        "facing=south": { "model": "wanderersbackpack:block/mushroom_backpack_shelf", "y": 180 },
+        "facing=west": { "model": "wanderersbackpack:block/mushroom_backpack_shelf", "y": 270 }
+    }
+}
