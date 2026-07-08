@@ -37,6 +37,7 @@ public class Network
         .registerPlayMessage("check_shelf_key", MessageCheckShelfKey.class, MessageCheckShelfKey.STREAM_CODEC, MessageCheckShelfKey::handle, PacketFlow.SERVERBOUND)
         .registerPlayMessage("response_shelf_key", MessageResponseShelfKey.class, MessageResponseShelfKey.STREAM_CODEC, MessageResponseShelfKey::handle, PacketFlow.CLIENTBOUND)
         .registerPlayMessage("use_bed_augment", MessageUseBedAugment.class, MessageUseBedAugment.STREAM_CODEC, MessageUseBedAugment::handle, PacketFlow.SERVERBOUND)
+        .registerPlayMessage("interact_fluid_tank", MessageInteractFluidTank.class, MessageInteractFluidTank.STREAM_CODEC, MessageInteractFluidTank::handle, PacketFlow.SERVERBOUND)
         .build();
 
     public static void init() {}

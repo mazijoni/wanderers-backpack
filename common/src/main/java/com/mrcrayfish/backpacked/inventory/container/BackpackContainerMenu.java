@@ -56,7 +56,6 @@ public class BackpackContainerMenu extends CustomContainerMenu
 
     private final Container backpackInventory;
     private final Container augmentInventory;
-    private final Container tankInventory = new SimpleContainer(1);
     private final ItemStack backpackStack;
     private final Player menuPlayer;
     private final int ownerId;
@@ -105,11 +104,29 @@ public class BackpackContainerMenu extends CustomContainerMenu
         int backpackSlotsWidth = this.cols * 18;
         int backpackSlotsX = Math.max((backpackWidth - backpackSlotsWidth) / 2, 0) + 1;
         int backpackSlotsY = 28;
+        // The Fluid Tank augment's gauge takes over the grid's rightmost column visually
+        // (BackpackScreen draws it over that space), but every BackpackSlot is still added here
+        // regardless - the total slot count must always stay cols*rows so every other index-based
+        // calculation in this class and BackpackScreen (augment slot indices, quickMoveStack, JEI
+        // areas, etc.) keeps working. Instead, that column's slots simply reject new items while
+        // the augment is active (see reserveFluidColumn below) - existing items already there stay
+        // fully visible and can still be taken out, just not added to.
+        boolean reserveFluidColumn = this.owner && BackpackHelper.findAugment(this.backpackStack, ModAugmentTypes.FLUID_TANK.get()) != null;
         for(int y = 0; y < rows; y++)
         {
             for(int x = 0; x < cols; x++)
             {
-                this.addSlot(new BackpackSlot(backpackContainer, x + y * cols, backpackSlotsX + x * 18, backpackSlotsY + y * 18));
+                boolean reserved = reserveFluidColumn && x == cols - 1;
+                this.addSlot(reserved
+                    ? new BackpackSlot(backpackContainer, x + y * cols, backpackSlotsX + x * 18, backpackSlotsY + y * 18)
+                    {
+                        @Override
+                        public boolean mayPlace(ItemStack stack)
+                        {
+                            return false;
+                        }
+                    }
+                    : new BackpackSlot(backpackContainer, x + y * cols, backpackSlotsX + x * 18, backpackSlotsY + y * 18));
             }
         }
 
@@ -132,26 +149,6 @@ public class BackpackContainerMenu extends CustomContainerMenu
                 this.addSlot(new UnlockableSlot(augmentController, augmentContainer, i, AUGMENT_PANEL_X + 1, y + 1)
                     .setPredicate(stack -> augmentContainer.canPlaceItem(slotIndex, stack)));
             }
-
-            // A single slot for filling/draining the Fluid Tank augment with vanilla-style buckets
-            // (see tickFluidTank). Always present at a fixed position below the augment column so
-            // the menu's slot list/indices stay stable; mayPlace rejects everything unless the
-            // augment is actually installed, so it's functionally inert otherwise.
-            int tankY = augmentY + this.augmentSlots * (18 + AUGMENT_SLOT_GAP);
-            this.addSlot(new Slot(this.tankInventory, 0, AUGMENT_PANEL_X + 1, tankY + 1)
-            {
-                @Override
-                public boolean mayPlace(ItemStack stack)
-                {
-                    return stack.getItem() instanceof BucketItem && BackpackHelper.findAugment(BackpackContainerMenu.this.backpackStack, ModAugmentTypes.FLUID_TANK.get()) != null;
-                }
-
-                @Override
-                public int getMaxStackSize()
-                {
-                    return 1;
-                }
-            });
         }
 
         int inventorySlotsWidth = 9 * 18;
@@ -210,9 +207,9 @@ public class BackpackContainerMenu extends CustomContainerMenu
         this.augments = augments;
     }
 
-    public ItemStack getTankSlotItem()
+    public int getFluidCapacity()
     {
-        return this.tankInventory.getItem(0);
+        return FluidTankAugment.capacity(this.rows);
     }
 
     @Override
@@ -228,17 +225,14 @@ public class BackpackContainerMenu extends CustomContainerMenu
         Slot slot = this.slots.get(index);
         int backpackSlots = this.rows * this.cols;
         int augmentEnd = backpackSlots + (this.owner ? this.augmentSlots : 0);
-        // The fluid tank slot sits right after the augment slots (only present for the owner) - it
-        // shares the same "shift-click sends it to player inventory" treatment as those slots.
-        int specialEnd = this.owner ? augmentEnd + 1 : augmentEnd;
 
         if(slot.hasItem())
         {
             ItemStack slotStack = slot.getItem();
             copy = slotStack.copy();
-            if(index < specialEnd)
+            if(index < augmentEnd)
             {
-                if(!this.moveItemStackTo(slotStack, specialEnd, this.slots.size(), true))
+                if(!this.moveItemStackTo(slotStack, augmentEnd, this.slots.size(), true))
                 {
                     return ItemStack.EMPTY;
                 }
@@ -278,11 +272,6 @@ public class BackpackContainerMenu extends CustomContainerMenu
             shelfContainer.tick();
         }
 
-        if(this.owner && this.menuPlayer instanceof ServerPlayer serverPlayer)
-        {
-            this.tickFluidTank(serverPlayer);
-        }
-
         // Placing/removing a physical AugmentItem changes the backpack's Augments record (via
         // BackpackAugmentContainer) without going through the normal slot-sync packets, since that
         // change lives on a *different* ItemStack (the backpack itself). Detect and push it here so
@@ -314,58 +303,48 @@ public class BackpackContainerMenu extends CustomContainerMenu
             shelfContainer.saveItemsToStack();
         }
         this.backpackInventory.stopOpen(playerIn);
-        this.clearContainer(playerIn, this.tankInventory);
     }
 
     /**
-     * Auto-fills/drains the Fluid Tank augment slot, converting whatever single bucket sits in it
-     * each tick - a filled bucket (of any fluid with a registered bucket item, vanilla or modded)
-     * tops up the tank and leaves an empty bucket behind; an empty bucket drains a full
-     * {@link FluidTankAugment#BUCKET_AMOUNT} back out as a filled bucket, if the tank has that much.
-     * Stacks of more than 1 are left untouched to avoid needing to split mixed item types across a
-     * single slot.
+     * Fills/drains the Fluid Tank augment directly from whatever the player is currently holding
+     * on their cursor in this menu - no intermediate slot is ever placeable, the bucket swap
+     * happens instantly server-side in response to a click anywhere in the gauge column (see
+     * MessageInteractFluidTank/BackpackScreen). A held empty bucket is swapped for a full one
+     * (draining {@link FluidTankAugment#BUCKET_AMOUNT} out of the tank) if the tank has enough of
+     * a fluid with a registered bucket item; a held filled bucket (of any fluid with a registered
+     * bucket item, vanilla or modded) is swapped for an empty one (filling the tank) if it accepts
+     * that fluid and has the spare capacity. Stacks of more than 1 are left untouched since a
+     * cursor stack can't be partially swapped.
      */
-    private void tickFluidTank(ServerPlayer player)
+    public void interactFluidTank(ServerPlayer player)
     {
         if(this.backpackStack.isEmpty())
             return;
 
         FluidTankAugment tank = BackpackHelper.findAugment(this.backpackStack, ModAugmentTypes.FLUID_TANK.get());
-        ItemStack heldStack = this.tankInventory.getItem(0);
         if(tank == null)
-        {
-            // Augment removed/disabled mid-session - don't strand an item in a slot the player
-            // can no longer interact with.
-            if(!heldStack.isEmpty())
-            {
-                this.tankInventory.setItem(0, ItemStack.EMPTY);
-                if(!player.getInventory().add(heldStack))
-                {
-                    player.drop(heldStack, false);
-                }
-            }
-            return;
-        }
-
-        if(heldStack.getCount() != 1 || !(heldStack.getItem() instanceof BucketItem))
             return;
 
-        if(heldStack.is(Items.BUCKET))
+        ItemStack carried = this.getCarried();
+        if(carried.getCount() != 1 || !(carried.getItem() instanceof BucketItem))
+            return;
+
+        if(carried.is(Items.BUCKET))
         {
             if(tank.fluid().isEmpty() || tank.amount() < FluidTankAugment.BUCKET_AMOUNT)
                 return;
             Optional<Item> filledBucket = Services.PLATFORM.getBucketForFluid(tank.fluid().get());
             filledBucket.ifPresent(item -> {
-                this.tankInventory.setItem(0, new ItemStack(item));
+                this.setCarried(new ItemStack(item));
                 this.setFluidTankAugment(tank.drain(FluidTankAugment.BUCKET_AMOUNT));
             });
             return;
         }
 
-        Optional<ResourceKey<Fluid>> fluid = Services.PLATFORM.getFluidFromBucket(heldStack);
-        if(fluid.isPresent() && tank.canAccept(fluid.get(), FluidTankAugment.BUCKET_AMOUNT))
+        Optional<ResourceKey<Fluid>> fluid = Services.PLATFORM.getFluidFromBucket(carried);
+        if(fluid.isPresent() && tank.canAccept(fluid.get(), FluidTankAugment.BUCKET_AMOUNT, this.getFluidCapacity()))
         {
-            this.tankInventory.setItem(0, new ItemStack(Items.BUCKET));
+            this.setCarried(new ItemStack(Items.BUCKET));
             this.setFluidTankAugment(tank.fill(fluid.get(), FluidTankAugment.BUCKET_AMOUNT));
         }
     }

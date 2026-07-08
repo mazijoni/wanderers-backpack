@@ -22,7 +22,16 @@ import net.neoforged.fml.ModList;
  */
 public class NeoForgeBackpackHelper implements IBackpackHelper
 {
-    private static final boolean CURIOS_LOADED = ModList.get().isLoaded("curios");
+    private static Boolean curiosLoaded;
+
+    private static boolean isCuriosLoaded()
+    {
+        if(curiosLoaded == null)
+        {
+            curiosLoaded = ModList.get() != null && ModList.get().isLoaded("curios");
+        }
+        return curiosLoaded;
+    }
 
     @Override
     public boolean isBackpackVisible(Player player)
@@ -53,12 +62,12 @@ public class NeoForgeBackpackHelper implements IBackpackHelper
     @Override
     public ItemStack getCuriosBackpackStack(Player player)
     {
-        return CURIOS_LOADED ? CuriosBackpackSupport.getStack(player) : ItemStack.EMPTY;
+        return isCuriosLoaded() ? CuriosBackpackSupport.getStack(player) : ItemStack.EMPTY;
     }
 
     @Override
     public boolean setCuriosBackpackStack(Player player, ItemStack stack)
     {
-        return CURIOS_LOADED && CuriosBackpackSupport.setStack(player, stack);
+        return isCuriosLoaded() && CuriosBackpackSupport.setStack(player, stack);
     }
 }

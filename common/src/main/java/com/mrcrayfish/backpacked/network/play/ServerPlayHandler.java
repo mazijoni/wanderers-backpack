@@ -255,6 +255,19 @@ public class ServerPlayHandler
         AugmentHandler.useBedAugment(serverPlayer);
     }
 
+    public static void handleInteractFluidTank(MessageInteractFluidTank message, MessageContext context)
+    {
+        Player player = context.getPlayer().orElse(null);
+        if(!(player instanceof ServerPlayer serverPlayer))
+            return;
+
+        // Player must be in a backpack container and must be the wearer
+        if(!(serverPlayer.containerMenu instanceof BackpackContainerMenu menu) || !menu.isOwner())
+            return;
+
+        menu.interactFluidTank(serverPlayer);
+    }
+
     public static void handleUpdateAugment(MessageUpdateAugment message, MessageContext context)
     {
         Player player = context.getPlayer().orElse(null);

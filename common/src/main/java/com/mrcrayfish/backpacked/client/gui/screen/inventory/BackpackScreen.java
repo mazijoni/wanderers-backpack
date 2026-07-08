@@ -44,6 +44,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -90,6 +91,7 @@ public class BackpackScreen extends UnlockableContainerScreen<BackpackContainerM
     private static final ResourceLocation ICON_SORT = Utils.rl("backpack/sort");
     private static final ResourceLocation ICON_BED = Utils.rl("backpack/bed");
     private static final ResourceLocation CHECKERS = Utils.rl("backpack/checkers");
+    private static final ResourceLocation FLUID_GAUGE_FILL = Utils.rl("backpack/fluid_gauge_fill");
 
     private static final int TITLE_LABEL_WIDTH = 110;
     private static final int TITLE_PADDING = 5;
@@ -98,6 +100,7 @@ public class BackpackScreen extends UnlockableContainerScreen<BackpackContainerM
     private static final int BACKPACK_PADDING_SIDE = 11;
     private static final int BACKPACK_PADDING_BOTTOM = 14;
     private static final int GAP = 3;
+    private static final int BACKPACK_SLOTS_Y = 27;
     private static final int INVENTORY_WIDTH = 176;
     private static final int INVENTORY_HEIGHT = 101;
     public static final int LABEL_PADDING = 5;
@@ -124,7 +127,7 @@ public class BackpackScreen extends UnlockableContainerScreen<BackpackContainerM
         this.cols = menu.getCols();
         this.rows = menu.getRows();
         this.owner = menu.isOwner();
-        this.imageWidth = BACKPACK_PADDING_SIDE + Math.max(this.cols, 9) * 18 + BACKPACK_PADDING_SIDE;
+        this.imageWidth = this.getCoreWidth();
         this.imageHeight = BACKPACK_TOP + BACKPACK_PADDING_TOP + (this.rows * 18) + BACKPACK_PADDING_BOTTOM + GAP + INVENTORY_HEIGHT;
         this.titleLabelX = 6;
         this.titleLabelY = 0;
@@ -141,18 +144,32 @@ public class BackpackScreen extends UnlockableContainerScreen<BackpackContainerM
     private int getAugmentPanelHeight()
     {
         int augmentSlots = this.menu.getAugmentSlots();
-        int height = augmentSlots * 18 + (augmentSlots - 1) * BackpackContainerMenu.AUGMENT_SLOT_GAP;
-        if(this.hasFluidTankAugment())
-        {
-            height += BackpackContainerMenu.AUGMENT_SLOT_GAP + 18;
-        }
-        return height;
+        return augmentSlots * 18 + (augmentSlots - 1) * BackpackContainerMenu.AUGMENT_SLOT_GAP;
     }
 
-    private int getFluidTankSlotY()
+    private int getCoreWidth()
     {
-        int augmentSlots = this.menu.getAugmentSlots();
-        return this.getAugmentPanelY() + augmentSlots * (18 + BackpackContainerMenu.AUGMENT_SLOT_GAP);
+        return BACKPACK_PADDING_SIDE + Math.max(this.cols, 9) * 18 + BACKPACK_PADDING_SIDE;
+    }
+
+    private int getBackpackSlotsX()
+    {
+        return (this.getCoreWidth() - this.cols * 18) / 2;
+    }
+
+    /**
+     * The Fluid Tank augment's gauge takes over the grid's rightmost column instead of adding an
+     * extra one (see BackpackContainerMenu's reserveFluidColumn) - so this is just that column's
+     * position, not extra width appended after the grid.
+     */
+    private int getFluidColumnX()
+    {
+        return this.getBackpackSlotsX() + (this.cols - 1) * 18;
+    }
+
+    private int getFluidColumnHeight()
+    {
+        return this.rows * 18;
     }
 
     private boolean hasFluidTankAugment()
@@ -406,19 +423,18 @@ public class BackpackScreen extends UnlockableContainerScreen<BackpackContainerM
     @Override
     protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
     {
-        // Only show the custom fluid-status tooltip while the tank slot is empty - if it's holding
-        // a bucket, the vanilla per-slot item tooltip (drawn by super below) already covers it.
         Optional<FluidTankAugment> tank = this.getFluidTankAugment();
-        if(tank.isPresent() && this.menu.getTankSlotItem().isEmpty())
+        if(tank.isPresent())
         {
-            int slotX = this.leftPos + BackpackContainerMenu.AUGMENT_PANEL_X;
-            int slotY = this.topPos + this.getFluidTankSlotY();
-            if(ScreenUtil.isPointInArea(mouseX, mouseY, slotX, slotY, 18, 18))
+            int columnX = this.leftPos + this.getFluidColumnX();
+            int columnY = this.topPos + BACKPACK_SLOTS_Y;
+            if(ScreenUtil.isPointInArea(mouseX, mouseY, columnX, columnY, 18, this.getFluidColumnHeight()))
             {
                 List<ClientTooltipComponent> components = new ArrayList<>();
                 components.add(new ClientTextTooltip(FLUID_TANK.getVisualOrderText()));
+                int capacity = this.menu.getFluidCapacity();
                 Component status = tank.get().fluid().flatMap(Services.PLATFORM::getBucketForFluid).<Component>map(item ->
-                    Component.translatable("wanderersbackpack.gui.fluid_tank_amount", new ItemStack(item).getHoverName(), tank.get().amount(), FluidTankAugment.CAPACITY)
+                    Component.translatable("wanderersbackpack.gui.fluid_tank_amount", new ItemStack(item).getHoverName(), tank.get().amount(), capacity)
                 ).orElse(FLUID_TANK_EMPTY);
                 components.add(new ClientTextTooltip(status.getVisualOrderText()));
                 ClientServices.CLIENT.drawTooltip(graphics, this.font, components, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE);
@@ -481,24 +497,49 @@ public class BackpackScreen extends UnlockableContainerScreen<BackpackContainerM
                 int slotY = augmentPanelY + i * (18 + BackpackContainerMenu.AUGMENT_SLOT_GAP);
                 graphics.blitSprite(BACKPACK_SLOT, x + BackpackContainerMenu.AUGMENT_PANEL_X, y + slotY, 18, 18);
             }
-            if(this.hasFluidTankAugment())
-            {
-                graphics.blitSprite(BACKPACK_SLOT, x + BackpackContainerMenu.AUGMENT_PANEL_X, y + this.getFluidTankSlotY(), 18, 18);
-            }
         }
 
-        // Draw Backpack Slots
+        // Draw Backpack Slots. When the Fluid Tank augment reserves the rightmost column (see
+        // BackpackContainerMenu), the gauge below is drawn directly over that column's space - no
+        // BackpackSlot backs it, so nothing is lost by drawing the default slot background under it.
         int backpackSlotsWidth = this.cols * 18;
         int backpackSlotsHeight = this.rows * 18;
-        int backpackSlotsX = (width - backpackSlotsWidth) / 2;
-        int backpackSlotsY = 27;
-        graphics.blitSprite(BACKPACK_SLOT, x + backpackSlotsX, y + backpackSlotsY, backpackSlotsWidth, backpackSlotsHeight);
+        int backpackSlotsX = this.getBackpackSlotsX();
+        graphics.blitSprite(BACKPACK_SLOT, x + backpackSlotsX, y + BACKPACK_SLOTS_Y, backpackSlotsWidth, backpackSlotsHeight);
 
-        int backpackCheckersWidth = (width - 11 - 11 - backpackSlotsWidth) / 2 - 3;
+        int backpackCheckersWidth = (this.getCoreWidth() - 11 - 11 - backpackSlotsWidth) / 2 - 3;
         if(backpackCheckersWidth > 0)
         {
-            graphics.blitSprite(CHECKERS, x + 11, y + 27, backpackCheckersWidth, backpackSlotsHeight);
-            graphics.blitSprite(CHECKERS, x + backpackSlotsX + backpackSlotsWidth + 3, y + 27, backpackCheckersWidth, backpackSlotsHeight);
+            graphics.blitSprite(CHECKERS, x + 11, y + BACKPACK_SLOTS_Y, backpackCheckersWidth, backpackSlotsHeight);
+            graphics.blitSprite(CHECKERS, x + backpackSlotsX + backpackSlotsWidth + 3, y + BACKPACK_SLOTS_Y, backpackCheckersWidth, backpackSlotsHeight);
+        }
+
+        // Fluid Tank augment's gauge - replaces the grid's rightmost column, one segment per
+        // inventory row/bucket.
+        if(this.owner && this.hasFluidTankAugment())
+        {
+            int fluidColumnX = this.getFluidColumnX();
+            int fluidColumnHeight = this.getFluidColumnHeight();
+            graphics.blitSprite(BACKPACK_SLOT, x + fluidColumnX, y + BACKPACK_SLOTS_Y, 18, fluidColumnHeight);
+
+            FluidTankAugment tank = this.getFluidTankAugment().orElseThrow();
+            int capacity = this.menu.getFluidCapacity();
+            if(capacity > 0 && tank.amount() > 0)
+            {
+                float fraction = Mth.clamp(tank.amount() / (float) capacity, 0.0F, 1.0F);
+                int fillHeight = Math.round((fluidColumnHeight - 2) * fraction);
+                if(fillHeight > 0)
+                {
+                    int fillTop = y + BACKPACK_SLOTS_Y + fluidColumnHeight - 1 - fillHeight;
+                    graphics.blitSprite(FLUID_GAUGE_FILL, x + fluidColumnX + 1, fillTop, 16, fillHeight);
+                }
+            }
+            // Tick marks between buckets/rows
+            for(int i = 1; i < this.rows; i++)
+            {
+                int lineY = y + BACKPACK_SLOTS_Y + i * 18;
+                graphics.fill(x + fluidColumnX + 1, lineY, x + fluidColumnX + 17, lineY + 1, 0x805C5145);
+            }
         }
 
         // Player Inventory
@@ -518,6 +559,28 @@ public class BackpackScreen extends UnlockableContainerScreen<BackpackContainerM
     private void openConfigScreen()
     {
         ClientServices.CLIENT.openConfigScreen();
+    }
+
+    /**
+     * The Fluid Tank augment has no placeable slot at all - clicking anywhere in its gauge column
+     * instantly fills/drains whatever bucket is on the cursor via a server round-trip
+     * (see BackpackContainerMenu#interactFluidTank), rather than letting the player drop a bucket
+     * into a slot there.
+     */
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        if(!this.hasPopupMenu() && this.owner && this.hasFluidTankAugment())
+        {
+            int columnX = this.leftPos + this.getFluidColumnX();
+            int columnY = this.topPos + BACKPACK_SLOTS_Y;
+            if(ScreenUtil.isPointInArea((int) mouseX, (int) mouseY, columnX, columnY, 18, this.getFluidColumnHeight()))
+            {
+                Network.getPlay().sendToServer(new MessageInteractFluidTank());
+                return true;
+            }
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override

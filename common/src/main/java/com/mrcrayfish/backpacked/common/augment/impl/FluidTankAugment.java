@@ -15,11 +15,11 @@ import java.util.Optional;
 
 /**
  * Stores a single type of fluid (filled/drained with vanilla-style buckets, see
- * BackpackContainerMenu's tank slot) up to {@link #CAPACITY} millibuckets.
+ * BackpackContainerMenu's tank slot) up to {@link #capacity(int)} millibuckets - one bucket's
+ * worth per row of the backpack's inventory grid.
  */
 public record FluidTankAugment(Optional<ResourceKey<Fluid>> fluid, int amount) implements Augment<FluidTankAugment>
 {
-    public static final int CAPACITY = 8000;
     public static final int BUCKET_AMOUNT = 1000;
 
     public static final AugmentType<FluidTankAugment> TYPE = new AugmentType<>(
@@ -43,12 +43,21 @@ public record FluidTankAugment(Optional<ResourceKey<Fluid>> fluid, int amount) i
     }
 
     /**
-     * @return true if this tank is empty or already holds the given fluid, and has enough spare
-     * capacity for another {@link #BUCKET_AMOUNT}.
+     * @return the tank's capacity for a backpack with the given number of inventory rows - one
+     * bucket's worth ({@link #BUCKET_AMOUNT}) per row.
      */
-    public boolean canAccept(ResourceKey<Fluid> fluid, int amount)
+    public static int capacity(int rows)
     {
-        return (this.fluid.isEmpty() || this.fluid.get().equals(fluid)) && this.amount + amount <= CAPACITY;
+        return rows * BUCKET_AMOUNT;
+    }
+
+    /**
+     * @return true if this tank is empty or already holds the given fluid, and has enough spare
+     * capacity (out of {@code capacity}) for another {@link #BUCKET_AMOUNT}.
+     */
+    public boolean canAccept(ResourceKey<Fluid> fluid, int amount, int capacity)
+    {
+        return (this.fluid.isEmpty() || this.fluid.get().equals(fluid)) && this.amount + amount <= capacity;
     }
 
     public FluidTankAugment fill(ResourceKey<Fluid> fluid, int amount)

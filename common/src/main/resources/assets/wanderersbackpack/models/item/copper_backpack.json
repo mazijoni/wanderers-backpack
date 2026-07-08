@@ -183,6 +183,7 @@
 	},
 	"overrides": [
 		{"predicate": {"wanderersbackpack:bed_augment": 1}, "model": "wanderersbackpack:item/copper_backpack_with_bed"},
-		{"predicate": {"wanderersbackpack:fluid_tank_augment": 1}, "model": "wanderersbackpack:item/copper_backpack_with_fluid_tank"}
+		{"predicate": {"wanderersbackpack:fluid_tank_augment": 1}, "model": "wanderersbackpack:item/copper_backpack_with_fluid_tank"},
+		{"predicate": {"wanderersbackpack:bed_augment": 1, "wanderersbackpack:fluid_tank_augment": 1}, "model": "wanderersbackpack:item/copper_backpack_with_bed_and_fluid_tank"}
 	]
 }

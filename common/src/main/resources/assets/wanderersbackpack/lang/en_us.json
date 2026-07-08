@@ -58,7 +58,7 @@
     "augment.wanderersbackpack.bed": "Bed",
     "augment.wanderersbackpack.bed.desc": "Adds a bed button to the backpack screen. At night, pressing it places a Hay Bed in front of you and puts you straight to sleep - it disappears again once you get up.",
     "augment.wanderersbackpack.fluid_tank": "Fluid Tank",
-    "augment.wanderersbackpack.fluid_tank.desc": "Adds a tank to the backpack that stores one type of fluid at a time, up to 8000 mB.\nFill it by placing a filled bucket into the tank slot in the backpack screen - it comes back out empty.\nDrop an empty bucket into the slot to drain a bucket's worth back out.",
+    "augment.wanderersbackpack.fluid_tank.desc": "Adds a fluid gauge to the right of the backpack's storage grid, storing one type of fluid at a time - one bucket's worth per row of the backpack.\nClick anywhere in the gauge column with a bucket in hand to fill or empty it.",
     "augment.wanderersbackpack.recall": "Recall",
     "augment.wanderersbackpack.recall.desc": "Upon death, the backpack returns to the assigned Backpack Shelf.\nIf the Backpack Shelf is occupied, the backpack will be put into a queue.\nIf a Backpack Shelf is not linked or it doesn't exist, the backpack will drop on death as normal.",
     "augment.wanderersbackpack.recall.link_shelf": "Link Shelf",
